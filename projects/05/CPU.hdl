@@ -40,4 +40,36 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+    Not(in=instruction[15], out=aMode);
+    Mux16(a=aluOut, b=instruction, sel=aMode, out=aRegIn);
+
+    Or(a=aMode, b=instruction[5], out=loadA);
+    ARegister(in=aRegIn, load=loadA, out=aRegOut, out[0..14]=addressM);
+
+    And(a=instruction[15], b=instruction[12], out=AMSelct);
+    Mux16(a=aRegOut, b=inM, sel=AMSelct, out=yIn);
+
+    ALU(x=dRegOut, y=yIn, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=aluOut, out=outM, zr=zrOut, ng=ngOut);
+
+    And(a=instruction[15], b=instruction[4], out=loadD);
+    DRegister(in=aluOut, load=loadD, out=dRegOut);
+    
+    And(a=instruction[15], b=instruction[3], out=writeM);
+
+    Not(in=ngOut, out=positive);
+    Not(in=zrOut, out=notZero);
+    And(a=notZero, b=positive, out=truePositive);
+
+    And(a=instruction[15], b=instruction[0], out=jgtCond);
+    And(a=instruction[15], b=instruction[1], out=jeqCond);
+    And(a=instruction[15], b=instruction[2], out=jltCond);
+    
+    And(a=jgtCond, b=truePositive, out=jgtResult);
+    And(a=jeqCond, b=zrOut, out=jeqResult);
+    And(a=jltCond, b=ngOut, out=jltResult);
+
+    Or(a=jgtResult, b=jeqResult, out=jgeResult);
+    Or(a=jgeResult, b=jltResult, out=loadPC);
+        
+    PC(in=aRegOut, reset=reset, load=loadPC, inc=true, out[0..14]=pc);
 }
