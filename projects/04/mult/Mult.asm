@@ -11,30 +11,38 @@
 
 // Put your code here.
 
-@R2
+// init output to 0
+@R2 
 M=0
 
+// jump if R0 is greater than 0
 @R0
 D=M
 @LOOP
 D;JGT
 
+// no need to loop
 @END
 0;JMP
 
 (LOOP)
+    // move output to D
     @R2
     D=M
 
+    // add R1 to output value
     @R1
     D=D+M
 
+    // store output
     @R2
     M=D
 
+    // decriment loop value
     @R0
     D=M-1
     
+    // jump back to loop if still more to loop
     @R0
     M=D
     @LOOP

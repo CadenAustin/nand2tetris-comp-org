@@ -16,14 +16,17 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
+    // Previous Value Incremented
     Inc16(in=t1, out=incremented);
     
+    // Previous or Incremented
     Mux16(a=t1, b=incremented, sel=inc, out=incMux);
+    // Increment MUX or Input
     Mux16(a=incMux, b=in, sel=load, out=loadMux);
-
-
+    // Load MUX or Reset
     Mux16(a=loadMux, b[0..15]=false, sel=reset, out=resetMux);
     
+    // Reset MUX in the Register
     Register(in=resetMux, load=true, out=out, out=t1);
     
 }

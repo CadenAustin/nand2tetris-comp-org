@@ -18,8 +18,10 @@ M=0
 @2
 M=0
 
+// Checks Keyboard Output
 (CHECK_KEY)
-    @24576
+    // Keyboard Address
+    @24576 
     D=M
     
     @WHITE
@@ -29,6 +31,7 @@ M=0
     0;JMP
 
 (WHITE)
+    // If write color was already white don't jump
     @0
     D=M
     @WRITE_W
@@ -38,12 +41,14 @@ M=0
     0;JMP
 
 (WRITE_W)
+    // Store white color in R0 
     @0
     M=0
     @WRITE
     0;JMP
 
 (BLACK)
+    // If write color was already black don't jump
     @0
     D=M
     @WRITE_B
@@ -55,25 +60,25 @@ M=0
 
 (WRITE_B)
     @0
-    M=-1
+    M=-1 // All 1s
     @WRITE
     0;JMP
 
 (WRITE)
-    @8190
+    @8192 // Size in words of Screen
     D=A
 
-    @1
+    @1 // Store in Memory
     M=D
     
     (WRITE_LOOP)
-        @1
+        @1 // Remaining Screen Addresses
         D=M
-        @cord
+        @cord 
         M=D
         @SCREEN
         D=A
-        @cord
+        @cord // Offset from the start of the screen
         M=M+D
         
         // Write to cord
@@ -81,19 +86,15 @@ M=0
         D=M
         @cord
         A=M
-        M=D
-       
-        //Debug
-        @cord
-        D=M
+        M=D // Set offset memory value to write color
 
-        @2
-        M=D
-
+        // Decrement Remaining Screen
         @1
-        D=M-1
-        M=D
-
+        M=M-1
+        
+        // Incremented to catch word at SCREEN+0 offset
+        D=M+1
+        
         @WRITE_LOOP
         D;JGT
     
