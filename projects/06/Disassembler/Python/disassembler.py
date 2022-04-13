@@ -84,7 +84,6 @@ if ".hack" in sys.argv[1]:
 
         # Loop through all assembly lines in the HACK file
         for line in Lines:
-
             # A Instruction
 
             # if - Check instruction op-code (the first char in the string)
@@ -98,7 +97,8 @@ if ".hack" in sys.argv[1]:
 
                 # Append to hackList
                 # https://www.geeksforgeeks.org/python-list-append-method/
-
+            if line[0] == '0':
+                hackList.append(f'@{int(line[1:16], 2)}\n')
 
 
             # C Instruction
@@ -124,6 +124,11 @@ if ".hack" in sys.argv[1]:
                 # Construct the appropriate HACK instruction
 
                 # Append to hackList
+            elif line[0] == '1':
+                aBit, cBits, dBits, jBits = line[3], line[4:10], line[10:13], line[13:16]
+                compInstructions = compTable[cBits].split(',')
+                compInstruction = compInstructions[int(aBit)] if (len(compInstructions) == 2) else compInstructions[0]
+                hackList.append(f'{destTable[dBits]}{compInstruction}{jumpTable[jBits]}\n')
 
         # Write to file
         file = open(sys.argv[1].replace('.hack', '.asm'), 'w')
