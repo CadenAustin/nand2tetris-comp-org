@@ -1,0 +1,6 @@
+@16
+D=M-D
+D;JLE
+@SCREEN
+M=M+1
+D+1;JNE

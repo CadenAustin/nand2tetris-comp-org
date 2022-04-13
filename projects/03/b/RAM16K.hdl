@@ -15,7 +15,7 @@ CHIP RAM16K {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    // BASE+4 LEVEL RAM, DMUX for Loading, Mux for Output
     DMux4Way(in=load, sel=address[12..13], a=dmux0, b=dmux1, c=dmux2, d=dmux3);
 
     RAM4K(in=in, address=address[0..11], load=dmux0, out=reg0);

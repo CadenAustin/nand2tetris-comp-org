@@ -14,7 +14,7 @@ CHIP Bit {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // Checks if data should be the load value or the previous value
     Mux(a=t1, b=in, sel=load, out=muxOut);
     DFF(in=muxOut, out=out, out=t1);
 }

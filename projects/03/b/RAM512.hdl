@@ -15,6 +15,8 @@ CHIP RAM512 {
     OUT out[16];
 
     PARTS:
+    // BASE+2 LEVEL RAM, DMUX for Loading, Mux for Output
+
     DMux8Way(in=load, sel=address[6..8], a=dmux0, b=dmux1, c=dmux2, d=dmux3, e=dmux4, f=dmux5, g=dmux6, h=dmux7);
 
     RAM64(in=in, address=address[0..5], load=dmux0, out=reg0);

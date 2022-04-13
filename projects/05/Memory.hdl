@@ -28,6 +28,8 @@ CHIP Memory {
 
     PARTS:
     // Put your code here:
+
+    // Dmux to decide if it should be ram, screen, or kbd
     DMux4Way(in=load, sel=address[13..14], a=ramMatch1, b=ramMatch2, c=screenMatch, d=keyMatch);
 
     Or(a=ramMatch1, b=ramMatch2, out=ramMatch);
@@ -35,5 +37,6 @@ CHIP Memory {
     Screen(in=in, load=screenMatch, address=address[0..12], out=screen);
     Keyboard(out=keyboard);
 
+    // Mux to output the appropriate memory
     Mux4Way16(a=ram, b=ram, c=screen, d=keyboard, sel=address[13..14], out=out);
 }
