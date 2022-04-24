@@ -1,5 +1,4 @@
 $include Operators.h
-
 //-----------------------------------------------------------------------------
 // Push the return address on the stack
 // Jump to procedure
@@ -38,38 +37,34 @@ $def pushFrame nargs nlocals
 // Push LCL
 @LCL
 D=M
-@pushD
+$pushD
 // Push ARG
 @ARG
 D=M
-@pushD
+$pushD
 // Push THIS
 @THIS
 D=M
-@pushD
+$pushD
 // Push THAT
 @THAT
 D=M
-@pushD
+$pushD
 // sets LCL to SP
 @SP
 D=M
 @LCL
 M=D
-// moves SP down by nlocals
-@nlocals
+@nargs
+D=D+A // add nargs
+@5
+D=D+A // add 5
+@ARG // save the result to ARG
+M=D
+@nlocals // moves SP down by nlocals
 D=A
 @SP
 M=M-D
-// sets ARG to LCL+5+nargs
-@LCL // save LCL to D,
-D=M
-@5
-D=D+A // add 5,
-@nargs
-D=D+A // add nargs
-@ARG // save the result to ARG
-M=D
 $end
 
 //-----------------------------------------------------------------------------
